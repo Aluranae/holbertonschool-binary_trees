@@ -9,33 +9,22 @@
 
 size_t binary_tree_height(const binary_tree_t *tree)
 {
-	/* Étape 1 : Déclarer deux variables de type size_t pour stocker */
-	/* la hauteur du sous-arbre gauche et la hauteur du sous-arbre droit */
-	size_t left_height, right_height;
+	size_t left = 0, right = 0;
 
-	/* Étape 2 : Vérifier si tree est NULL */
-	/* Si oui, retourner 0 */
 	if (tree == NULL)
 		return (0);
 
-	/* Étape 3 : Vérifier si le nœud est une feuille */
-	if (tree->left == NULL && tree->right == NULL)
-		return (0);
-
-	/* Étape 4 : Appel récursif sur tree->left */
-	/* pour calculer la hauteur gauche */
-	left_height = binary_tree_height(tree->left);
-
-	/* Étape 5 : Appel récursif sur tree->right */
-	/* pour calculer la hauteur droite */
-	right_height = binary_tree_height(tree->right);
-
-	/* Étape 6 : Comparer les deux hauteurs */
-	/* Retourner 1 + la plus grande des deux */
-	if (left_height > right_height)
-		return (1 + left_height);
+	if (tree->left)
+		left = 1 + binary_tree_height(tree->left);
 	else
-		return (1 + right_height);
+		left = 0;
+
+	if (tree->right)
+		right = 1 + binary_tree_height(tree->right);
+	else
+		right = 0;
+
+	return (left > right ? left : right);
 }
 
 /**
@@ -47,28 +36,11 @@ size_t binary_tree_height(const binary_tree_t *tree)
 
 int binary_tree_balance(const binary_tree_t *tree)
 {
-	/* Étape 1 : Déclarer deux variables size_t pour stocker les hauteurs */
-	/* du sous-arbre gauche et du sous-arbre droit */
-	int left_height;
-
-	int right_height;
-
-	int balance = 0;
-
-	/* Étape 2 : Vérifier si tree est NULL */
-	/* Si oui, retourner 0 */
 	if (tree == NULL)
 		return (0);
 
-	/* Étape 3 : Calculer la hauteur de tree->left via binary_tree_height() */
-	left_height = binary_tree_height(tree->left);
-
-	/* Étape 4 : Calculer la hauteur de tree->right via binary_tree_height() */
-	right_height = binary_tree_height(tree->right);
-
-	/* Étape 5 : Calculer la différence (gauche - droite) */
-	balance = left_height - right_height;
-
-	/* et la retourner en tant que int */
-	return (balance);
+	return (
+		(int)binary_tree_height(tree->left) -
+		(int)binary_tree_height(tree->right)
+	);
 }
